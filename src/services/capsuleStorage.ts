@@ -1,4 +1,5 @@
-import type { Capsule } from '../types/capsule'
+import type { Capsule, NewCapsule } from '../types/capsule'
+
 
 const STORAGE_KEY = 'dear-future:capsules'
 
@@ -25,4 +26,22 @@ export function listCapsules(): Capsule[] {
 
 export function getCapsule(id: string): Capsule | undefined {
   return listCapsules().find((capsule) => capsule.id === id)
+}
+
+export function createCapsule(input: NewCapsule): Capsule {
+  const opensAt = Date.parse(input.opensAt)
+  if (!input.title.trim() || !input.message.trim()
+    || !Number.isFinite(opensAt) || opensAt <= Date.now()) {
+    throw new Error('Preencha os campos e escolha uma data futura.')
+  }
+  const capsule: Capsule = {
+    id: crypto.randomUUID(),
+    title: input.title.trim(),
+    message: input.message.trim(),
+    createdAt: new Date().toISOString(),
+    opensAt: new Date(opensAt).toISOString(),
+  }
+  const capsules = listCapsules()
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...capsules, capsule]))
+  return capsule
 }
