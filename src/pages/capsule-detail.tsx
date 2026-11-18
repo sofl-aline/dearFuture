@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Alert, Button, Stack, Typography } from '@mui/material'
 import { Link, useParams } from 'react-router-dom'
 import { getCapsule } from '../services/capsuleStorage'
+import useCountdown from '../hooks/useCountdown'
 import type { Capsule } from '../types/capsule'
 
 type Result = { capsule: Capsule | undefined; error: boolean }
@@ -16,10 +17,16 @@ function CapsuleDetails({ id }: { id: string }) {
   })
   if (result.error) return <Alert severity="error">Não foi possível carregar a cápsula.</Alert>
   if (!result.capsule) return <Alert severity="info">Cápsula não encontrada.</Alert>
+  return <CapsuleContent capsule={result.capsule} />
+}
+
+function CapsuleContent({ capsule }: { capsule: Capsule }) {
+  const countdown = useCountdown(capsule.opensAt)
   return (
     <Stack spacing={2}>
-      <Typography component="h1" variant="h4">{result.capsule.title}</Typography>
-      <Typography>Abertura em {new Date(result.capsule.opensAt).toLocaleString('pt-BR')}</Typography>
+      <Typography component="h1" variant="h4">{capsule.title}</Typography>
+      <Typography>Abertura em {new Date(capsule.opensAt).toLocaleString('pt-BR')}</Typography>
+      <Typography>{countdown.available ? 'Disponível para abertura.' : countdown.label}</Typography>
     </Stack>
   )
 }
