@@ -22,11 +22,20 @@ function CapsuleDetails({ id }: { id: string }) {
 
 function CapsuleContent({ capsule }: { capsule: Capsule }) {
   const countdown = useCountdown(capsule.opensAt)
+  const [opened, setOpened] = useState(false)
   return (
     <Stack spacing={2}>
       <Typography component="h1" variant="h4">{capsule.title}</Typography>
       <Typography>Abertura em {new Date(capsule.opensAt).toLocaleString('pt-BR')}</Typography>
       <Typography>{countdown.available ? 'Disponível para abertura.' : countdown.label}</Typography>
+      {countdown.available && !opened && (
+        <Button variant="contained" onClick={() => setOpened(true)}>Abrir cápsula</Button>
+      )}
+      {countdown.available && opened && (
+        <Typography sx={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
+          {capsule.message}
+        </Typography>
+      )}
     </Stack>
   )
 }
