@@ -43,27 +43,16 @@ A demonstração será local.
 
 ## Equipe e sequência de trabalho
 
-Preencher os cinco nomes completos e substituir `<usuario>` pelo login GitHub
-de cada responsável antes da entrega.
+| Integrante                              | Branch | Sequência de mudanças |
+|-----------------------------------------| --- | --- |
+| Aline Silva Oliveira de Figueiredo Lima | `sofl-aline/base-navegacao` | Configuração → rotas → layout → destaque na Home → README |
+| Mateus Cavalcante de Lima               | `codex/MateusCavalcanteLima-criacao` | Campos controlados → validação → gravação e feedback |
+| José Vasconcelos de Carvalho Neto       | `netocarvalhopb/persistencia-listagem` | Tipo → leitura e busca → gravação → cartões → filtro |
+| Romulo Frade Cardoso Fernandes          | `RomuloFCF/abertura` | Detalhe por ID → estado inexistente → contagem regressiva → abertura |
+| Rafaella Porto                          | `rafaellaneporto/api-contexto` | Serviço → painel → carregamento e vazio → erro e nova tentativa → integração |
 
-| Integrante | Branch | Sequência de mudanças |
-| --- | --- | --- |
-| Nome completo 1 | `codex/<usuario>-base-navegacao` | Configuração → rotas → layout → destaque na Home → README |
-| Nome completo 2 | `codex/<usuario>-criacao` | Campos controlados → validação → gravação e feedback |
-| Nome completo 3 | `codex/<usuario>-persistencia-listagem` | Tipo → leitura e busca → gravação → cartões → filtro |
-| Nome completo 4 | `codex/<usuario>-abertura` | Detalhe por ID → estado inexistente → contagem regressiva → abertura |
-| Nome completo 5 | `codex/<usuario>-api-contexto` | Serviço → painel → carregamento e vazio → erro e nova tentativa → integração |
-
-Cada integrante configura seu nome e e-mail associados ao GitHub, publica
-commits pequenos conforme termina mudanças revisáveis e abre PRs incrementais
-para `main`. Na descrição, registrar como testar e quais dependências existem.
-Usar a opção **Create a merge commit**. Depois de integrar um PR, incorporar
-`origin/main` à branch pessoal antes da próxima etapa. Manter as branches
-publicadas até a avaliação.
-
-Integrar primeiro a base, depois o armazenamento para liberar criação e
-detalhe. Integrar o painel de feriados depois do detalhe e validar resposta e
-CORS no navegador.
+Cada integrante publica commits pequenos conforme termina mudanças revisáveis e abre PRs incrementais
+para `main`.
 
 ## Contratos e aceite do MVP
 
@@ -84,6 +73,6 @@ teclado, tela móvel, formulário inválido, lista vazia, persistência após
 recarregar, ID inexistente, abertura no horário e estados da API. Conferir
 console, nomes completos e autoria dos commits.
 
-A pessoa 1 envia o código pelo Classroom até 29/11/2026. Na apresentação de
+Enviar o código pelo Classroom até 29/11/2026. Na apresentação de
 30/11 ou 07/12, conforme sorteio, cada integrante demonstra sua entrega e
 explica uma decisão técnica.
