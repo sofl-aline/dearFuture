@@ -1,8 +1,10 @@
 # Dear Future
 
 Aplicação de cápsulas do tempo. O fluxo previsto permite escrever uma carta,
-agendar a abertura e consultar as cápsulas no mesmo navegador. A base atual
-oferece a navegação e as telas provisórias para o desenvolvimento em equipe.
+agendar a abertura e consultar as cápsulas no mesmo navegador. A aplicação já
+oferece navegação, destaque da próxima cápsula na Home, listagem com filtros
+e abertura de cartas na data programada. O formulário de criação e a
+integração dos feriados estão em desenvolvimento.
 
 ## Executar localmente
 
@@ -29,9 +31,11 @@ A demonstração será local.
 - Na implementação do MVP, `src/types/capsule.ts` define `Capsule`.
   `src/services/capsuleStorage.ts` concentra o acesso ao localStorage.
   `src/hooks/useCountdown.ts` controla a contagem regressiva.
-  `src/services/holidaysApi.ts` consulta a BrasilAPI com fetch.
-  Os componentes `CapsuleForm`, `CapsuleCard` e `HolidayContext` entram
-  nos PRs dos responsáveis.
+  Os componentes `CapsuleForm` e `CapsuleCard` já estão integrados; o
+  formulário ainda precisa de validação e integração com a gravação.
+  O serviço `src/services/holidaysApi.ts`, que consulta a BrasilAPI com fetch,
+  e o painel `HolidayContext` estão em desenvolvimento na branch responsável
+  pela API e ainda precisam ser integrados à `main`.
 
 | Rota | Tela |
 | --- | --- |
