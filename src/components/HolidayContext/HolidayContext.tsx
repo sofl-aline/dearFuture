@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Alert, Stack, Typography } from '@mui/material'
+import { Alert, Button, Stack, Typography } from '@mui/material'
 import { getHolidays } from '../../services/holidaysApi'
 import type { Holiday } from '../../services/holidaysApi'
 
@@ -43,10 +43,14 @@ function HolidayRequest({ createdAt }: { createdAt: string }) {
 }
 
 export default function HolidayContext({ createdAt }: { createdAt: string }) {
+  const [attempt, setAttempt] = useState(0)
   return (
     <Stack component="section" spacing={1}>
       <Typography component="h2" variant="h6">Feriados no mês de criação</Typography>
-      <HolidayRequest key={createdAt} createdAt={createdAt} />
+      <HolidayRequest key={`${createdAt}-${attempt}`} createdAt={createdAt} />
+      <Button onClick={() => setAttempt((current) => current + 1)}>
+        Consultar novamente
+      </Button>
     </Stack>
   )
 }
