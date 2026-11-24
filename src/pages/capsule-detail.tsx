@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getCapsule } from '../services/capsuleStorage'
 import useCountdown from '../hooks/useCountdown'
 import type { Capsule } from '../types/capsule'
+import HolidayContext from '../components/HolidayContext/HolidayContext'
 
 type Result = { capsule: Capsule | undefined; error: boolean }
 
@@ -36,6 +37,7 @@ function CapsuleContent({ capsule }: { capsule: Capsule }) {
           {capsule.message}
         </Typography>
       )}
+      <HolidayContext createdAt={capsule.createdAt} />
     </Stack>
   )
 }
