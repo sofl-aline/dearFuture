@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Alert, Button, Stack, Typography } from '@mui/material'
+import { Alert, Box, Button, Paper, Stack, Typography } from '@mui/material'
+import { ArrowLeft, CalendarDays, Clock, LockKeyholeOpen } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { getCapsule, readMessage } from '../services/capsuleApi'
 import useCountdown from '../hooks/useCountdown'
 import type { Capsule } from '../types/capsule'
 import HolidayContext from '../components/HolidayContext/HolidayContext'
+import CapsuleStatus from '../components/CapsuleStatus/CapsuleStatus'
 
 type Result =
   | { status: 'loading' }
@@ -62,19 +64,51 @@ function CapsuleContent({ capsule }: { capsule: Capsule }) {
   }
 
   return (
-    <Stack spacing={2}>
-      <Typography component="h1" variant="h4">{capsule.title}</Typography>
-      <Typography>Abertura em {new Date(capsule.opensAt).toLocaleString('pt-BR')}</Typography>
-      <Typography>{countdown.available ? 'Disponível para abertura.' : countdown.label}</Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      {countdown.available && message === null && (
-        <Button variant="contained" disabled={busy} onClick={openCapsule}>
-          {busy ? 'Abrindo…' : 'Abrir cápsula'}
-        </Button>
-      )}
-      {message !== null && (
-        <Typography sx={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{message}</Typography>
-      )}
+    <Stack spacing={3}>
+      <Paper variant="outlined" sx={{ p: { xs: 2.5, md: 4 }, borderRadius: '24px' }}>
+        <Stack spacing={2} sx={{ alignItems: 'flex-start' }}>
+          <CapsuleStatus available={countdown.available} />
+          <Typography component="h1" variant="h4" sx={{ overflowWrap: 'anywhere' }}>{capsule.title}</Typography>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', color: 'text.secondary' }}>
+            <CalendarDays size={20} strokeWidth={1.75} aria-hidden="true" />
+            <Typography>Abertura em {new Date(capsule.opensAt).toLocaleString('pt-BR')}</Typography>
+          </Stack>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', color: 'primary.main' }}>
+              <Clock size={20} strokeWidth={1.75} aria-hidden="true" />
+            </Box>
+            <Typography sx={{ fontWeight: 700 }}>
+              {countdown.available ? 'Disponível para abertura.' : countdown.label}
+            </Typography>
+          </Stack>
+          {error && <Alert severity="error" sx={{ width: '100%' }}>{error}</Alert>}
+          {countdown.available && message === null && (
+            <Button
+              variant="contained"
+              disabled={busy}
+              onClick={openCapsule}
+              startIcon={<LockKeyholeOpen size={20} strokeWidth={1.75} aria-hidden="true" />}
+            >
+              {busy ? 'Abrindo…' : 'Abrir cápsula'}
+            </Button>
+          )}
+          {message !== null && (
+            <Box
+              sx={{
+                width: '100%',
+                p: { xs: 2, md: 3 },
+                borderRadius: '16px',
+                bgcolor: 'rgba(185, 167, 245, 0.16)',
+                borderLeft: '3px solid #7C63DB',
+              }}
+            >
+              <Typography sx={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', lineHeight: 1.7 }}>
+                {message}
+              </Typography>
+            </Box>
+          )}
+        </Stack>
+      </Paper>
       <HolidayContext createdAt={capsule.createdAt} />
     </Stack>
   )
@@ -83,8 +117,15 @@ function CapsuleContent({ capsule }: { capsule: Capsule }) {
 export default function CapsuleDetail() {
   const { id } = useParams()
   return (
-    <Stack spacing={2}>
-      <Button component={Link} to="/capsules">Voltar às cápsulas</Button>
+    <Stack spacing={2} sx={{ maxWidth: 860 }}>
+      <Button
+        component={Link}
+        to="/capsules"
+        startIcon={<ArrowLeft size={20} strokeWidth={1.75} aria-hidden="true" />}
+        sx={{ alignSelf: 'flex-start', px: 1 }}
+      >
+        Voltar às cápsulas
+      </Button>
       <CapsuleDetails key={id} id={id ?? ''} />
     </Stack>
   )
