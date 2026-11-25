@@ -13,7 +13,11 @@ export default function Auth({ register = false }: { register?: boolean }) {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
-  if (token) return <Navigate to="/" replace />
+  const from = location.state?.from
+  const destination = typeof from === 'string' && from.startsWith('/') && !from.startsWith('//')
+    ? from : '/'
+
+  if (token) return <Navigate to={destination} replace />
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -34,10 +38,7 @@ export default function Auth({ register = false }: { register?: boolean }) {
       } else {
         const accessToken = await login(credentials)
         setToken(accessToken)
-        const from = location.state?.from
-        const destination = typeof from === 'string' && from.startsWith('/') && !from.startsWith('//')
-          ? from : '/'
-        navigate(destination, { replace: true })
+
       }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Não foi possível concluir a operação.')
