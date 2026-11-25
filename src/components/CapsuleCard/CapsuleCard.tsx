@@ -38,7 +38,7 @@ export default function CapsuleCard({ capsule, now, headingComponent = 'h3' }: P
             sx={{
               width: 44,
               height: 44,
-              borderRadius: 3,
+              borderRadius: '12px',
               display: 'grid',
               placeItems: 'center',
               color: 'primary.main',

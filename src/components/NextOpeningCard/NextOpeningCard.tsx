@@ -40,7 +40,7 @@ export default function NextOpeningCard({ capsule, now }: NextOpeningCardProps) 
             sx={{
               py: 1.25,
               textAlign: 'center',
-              borderRadius: 3,
+              borderRadius: '12px',
               border: 1,
               borderColor: 'divider',
               bgcolor: 'background.paper',

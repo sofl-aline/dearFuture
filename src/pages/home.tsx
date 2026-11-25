@@ -72,7 +72,7 @@ export default function Home() {
         sx={{
           position: 'relative',
           overflow: 'hidden',
-          borderRadius: 6,
+          borderRadius: '28px',
           p: { xs: 3, md: 5 },
           minHeight: { sm: 300 },
           background: light
@@ -130,7 +130,7 @@ export default function Home() {
 
       {preview.status === 'ready' && (
         <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 1.3fr) minmax(0, 1fr)' } }}>
-          <Paper component="section" aria-labelledby="next-title" variant="outlined" sx={{ p: 3, borderRadius: 5 }}>
+          <Paper component="section" aria-labelledby="next-title" variant="outlined" sx={{ p: 3, borderRadius: '24px' }}>
             <Stack spacing={2}>
               <Typography id="next-title" component="h2" variant="h6">Próxima abertura</Typography>
               {nextCapsule
@@ -139,14 +139,14 @@ export default function Home() {
             </Stack>
           </Paper>
 
-          <Paper component="section" aria-labelledby="summary-title" variant="outlined" sx={{ p: 3, borderRadius: 5 }}>
+          <Paper component="section" aria-labelledby="summary-title" variant="outlined" sx={{ p: 3, borderRadius: '24px' }}>
             <Stack spacing={2}>
               <Typography id="summary-title" component="h2" variant="h6">Minhas cápsulas</Typography>
               <Box component="dl" sx={{ m: 0, display: 'grid', gap: 1, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }}>
                 {stats.map((stat) => (
                   <Box
                     key={stat.label}
-                    sx={{ p: 1.5, borderRadius: 3, bgcolor: 'rgba(185, 167, 245, 0.18)', display: 'flex', flexDirection: 'column-reverse' }}
+                    sx={{ p: 1.5, borderRadius: '12px', bgcolor: 'rgba(185, 167, 245, 0.18)', display: 'flex', flexDirection: 'column-reverse' }}
                   >
                     <Typography component="dt" variant="body2" sx={{ color: 'text.secondary' }}>{stat.label}</Typography>
                     <Typography component="dd" sx={{ m: 0, fontSize: '1.75rem', fontWeight: 800, lineHeight: 1.1 }}>

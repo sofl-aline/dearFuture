@@ -19,7 +19,7 @@ export default function AppLayout() {
           zIndex: 10,
           px: 2,
           py: 1,
-          borderRadius: 2,
+          borderRadius: '8px',
           bgcolor: 'background.paper',
           color: 'text.primary',
           '&:focus': { left: 8 },
@@ -50,7 +50,7 @@ export default function AppLayout() {
           component={Link}
           to="/"
           aria-label="Dear Future — início"
-          sx={{ color: 'inherit', textDecoration: 'none', alignSelf: 'flex-start', borderRadius: 2 }}
+          sx={{ color: 'inherit', textDecoration: 'none', alignSelf: 'flex-start', borderRadius: '8px' }}
         >
           <BrandLogo />
         </Box>
@@ -86,7 +86,7 @@ export default function AppLayout() {
               component={Link}
               to="/"
               aria-label="Dear Future — início"
-              sx={{ color: 'primary.main', textDecoration: 'none', borderRadius: 2 }}
+              sx={{ color: 'primary.main', textDecoration: 'none', borderRadius: '8px' }}
             >
               <BrandLogo size={36} />
             </Box>

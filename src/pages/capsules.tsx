@@ -54,7 +54,7 @@ export default function Capsules() {
       </Stack>
 
       {result.error ? <Alert severity="error">{result.error}</Alert> : result.capsules.length === 0 ? (
-        <Paper variant="outlined" sx={{ p: { xs: 3, md: 5 }, borderRadius: 5, textAlign: 'center' }}>
+        <Paper variant="outlined" sx={{ p: { xs: 3, md: 5 }, borderRadius: '24px', textAlign: 'center' }}>
           <Stack spacing={2} sx={{ alignItems: 'center' }}>
             <Box sx={{ color: 'primary.main' }}>
               <Inbox size={40} strokeWidth={1.5} aria-hidden="true" />
@@ -79,7 +79,7 @@ export default function Capsules() {
           </TextField>
 
           {visible.length === 0 ? (
-            <Paper variant="outlined" sx={{ p: 3, borderRadius: 5 }}>
+            <Paper variant="outlined" sx={{ p: 3, borderRadius: '24px' }}>
               <Stack spacing={1.5} sx={{ alignItems: 'flex-start' }}>
                 <Typography>Nenhuma cápsula encontrada neste filtro.</Typography>
                 <Button onClick={() => setFilter('all')}>Mostrar todas</Button>

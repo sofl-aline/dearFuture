@@ -46,7 +46,7 @@ export default function AppNavigation({ orientation }: AppNavigationProps) {
                 sx={{
                   justifyContent: 'flex-start',
                   color: 'inherit',
-                  borderRadius: 3,
+                  borderRadius: '12px',
                   px: 2,
                   fontWeight: active ? 800 : 600,
                   bgcolor: active ? 'rgba(185, 167, 245, 0.22)' : 'transparent',
