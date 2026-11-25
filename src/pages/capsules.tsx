@@ -1,19 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Alert, MenuItem, Stack, TextField, Typography } from '@mui/material'
+import { Alert, Button, MenuItem, Stack, TextField, Typography } from '@mui/material'
 import CapsuleCard from '../components/CapsuleCard/CapsuleCard'
-import { listCapsules } from '../services/capsuleStorage'
-import type { Capsule } from '../types/capsule'
-
-type Result = { capsules: Capsule[]; error: string }
+import useCapsules from '../hooks/useCapsules'
 
 export default function Capsules() {
-  const [result] = useState<Result>(() => {
-    try {
-      return { capsules: listCapsules(), error: '' }
-    } catch {
-      return { capsules: [], error: 'Não foi possível ler as cápsulas salvas.' }
-    }
-  })
+  const { result, retry } = useCapsules()
   const [filter, setFilter] = useState('all')
   const [now, setNow] = useState(() => Date.now())
 
@@ -22,16 +13,22 @@ export default function Capsules() {
     return () => window.clearInterval(timer)
   }, [])
 
-  const visible = result.capsules.filter((capsule) => {
+  const visible = result.status === 'ready' ? result.capsules.filter((capsule) => {
     if (filter === 'future') return Date.parse(capsule.opensAt) > now
     if (filter === 'available') return Date.parse(capsule.opensAt) <= now
     return true
-  })
+  }) : []
 
   return (
     <Stack spacing={2}>
       <Typography component="h1" variant="h4">Minhas cápsulas</Typography>
-      {result.error ? <Alert severity="error">{result.error}</Alert> : (
+      {result.status === 'loading' && <Typography role="status">Carregando cápsulas…</Typography>}
+      {result.status === 'error' && (
+        <Alert severity="error" action={<Button onClick={retry}>Tentar novamente</Button>}>
+          {result.message}
+        </Alert>
+      )}
+      {result.status === 'ready' && (
         <>
           <TextField select label="Exibir" value={filter}
             onChange={(event) => setFilter(event.target.value)}>

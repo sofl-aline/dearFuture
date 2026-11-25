@@ -4,7 +4,8 @@ import { Box, Button, Stack, TextField } from '@mui/material'
 import type { NewCapsule } from '../../types/capsule'
 
 type CapsuleFormProps = {
-  onSubmit: (values: NewCapsule) => void
+  onSubmit: (values: NewCapsule) => void | Promise<void>
+  saving?: boolean
 }
 
 // Uma mensagem de erro opcional para cada campo
@@ -14,10 +15,12 @@ type FormErrors = Partial<Record<keyof NewCapsule, string>>
 function validate(values: NewCapsule): FormErrors {
   const errors: FormErrors = {}
 
+  if (values.title.trim().length > 120) errors.title = 'Use no máximo 120 caracteres.'
   if (!values.title.trim()) {
     errors.title = 'Informe um título.'
   }
 
+  if (values.message.trim().length > 10000) errors.message = 'Use no máximo 10000 caracteres.'
   if (!values.message.trim()) {
     errors.message = 'Escreva a sua mensagem.'
   }
@@ -32,7 +35,7 @@ function validate(values: NewCapsule): FormErrors {
   return errors
 }
 
-export default function CapsuleForm({ onSubmit }: CapsuleFormProps) {
+export default function CapsuleForm({ onSubmit, saving = false }: CapsuleFormProps) {
   const [values, setValues] = useState<NewCapsule>({
     title: '',
     message: '',
@@ -49,6 +52,7 @@ export default function CapsuleForm({ onSubmit }: CapsuleFormProps) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (saving) return
 
     const newErrors = validate(values)
     setErrors(newErrors)
@@ -70,6 +74,7 @@ export default function CapsuleForm({ onSubmit }: CapsuleFormProps) {
           error={Boolean(errors.title)}
           helperText={errors.title}
           required
+          disabled={saving}
           fullWidth
         />
         <TextField
@@ -80,6 +85,7 @@ export default function CapsuleForm({ onSubmit }: CapsuleFormProps) {
           error={Boolean(errors.message)}
           helperText={errors.message}
           required
+          disabled={saving}
           multiline
           minRows={6}
           fullWidth
@@ -93,11 +99,12 @@ export default function CapsuleForm({ onSubmit }: CapsuleFormProps) {
           error={Boolean(errors.opensAt)}
           helperText={errors.opensAt}
           required
+          disabled={saving}
           fullWidth
           slotProps={{ inputLabel: { shrink: true } }}
         />
-        <Button type="submit" variant="contained">
-          Selar cápsula
+        <Button type="submit" variant="contained" disabled={saving}>
+          {saving ? 'Salvando…' : 'Selar cápsula'}
         </Button>
       </Stack>
     </Box>
