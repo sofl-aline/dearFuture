@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 360" fill="none">
+  <defs>
+    <linearGradient id="wavesLightGradDf03" x1="0" y1="180" x2="1600" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E6DFFF" stop-opacity="0.95"/>
+      <stop offset="0.5" stop-color="#B9A7F5" stop-opacity="0.78"/>
+      <stop offset="1" stop-color="#BBDFFF" stop-opacity="0.88"/>
+    </linearGradient>
+    <linearGradient id="wavesLightGradDf04" x1="0" y1="220" x2="1600" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D9CCFF" stop-opacity="0.65"/>
+      <stop offset="1" stop-color="#45A5FF" stop-opacity="0.52"/>
+    </linearGradient>
+    <linearGradient id="wavesLightGradDf05" x1="0" y1="260" x2="1600" y2="260" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F3EEFF" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#C9E5FF" stop-opacity="0.42"/>
+    </linearGradient>
+  </defs>
+  <path d="M0 222C136 172 275 166 390 202C518 241 614 284 760 268C917 250 1013 153 1168 138C1315 124 1450 181 1600 235V360H0V222Z" fill="url(#wavesLightGradDf03)"/>
+  <path d="M0 262C131 297 264 303 379 278C503 251 610 194 743 195C894 197 1008 270 1141 274C1276 278 1405 215 1600 166V360H0V262Z" fill="url(#wavesLightGradDf04)"/>
+  <path d="M0 310C138 282 251 236 377 229C526 221 654 272 789 294C922 316 1059 310 1177 278C1318 240 1458 195 1600 204V360H0V310Z" fill="url(#wavesLightGradDf05)"/>
+</svg>
