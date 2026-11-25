@@ -8,23 +8,13 @@ import wavesDark from '../assets/decorations/background-waves-dark.svg'
 import sparkle from '../assets/decorations/sparkle.svg'
 import CapsuleCard from '../components/CapsuleCard/CapsuleCard'
 import NextOpeningCard from '../components/NextOpeningCard/NextOpeningCard'
-import { listCapsules } from '../services/capsuleStorage.ts'
-import type { Capsule } from '../types/capsule.ts'
-
-type Preview =
-  | { status: 'ready'; capsules: Capsule[] }
-  | { status: 'error' }
+import useCapsules from '../hooks/useCapsules'
+import type { Capsule } from '../types/capsule'
 
 export default function Home() {
   const theme = useTheme()
   const light = theme.palette.mode === 'light'
-  const [preview] = useState<Preview>(() => {
-    try {
-      return { status: 'ready', capsules: listCapsules() }
-    } catch {
-      return { status: 'error' }
-    }
-  })
+  const { result, retry } = useCapsules()
   const [now, setNow] = useState(() => Date.now())
 
   useEffect(() => {
@@ -32,7 +22,7 @@ export default function Home() {
     return () => window.clearInterval(intervalId)
   }, [])
 
-  const capsules = preview.status === 'ready' ? preview.capsules : []
+  const capsules = result.status === 'ready' ? result.capsules : []
 
   // a próxima a abrir é a de menor data que ainda está no futuro
   const nextCapsule = capsules.reduce<Capsule | undefined>((next, capsule) => {
@@ -124,11 +114,14 @@ export default function Home() {
         </Stack>
       </Paper>
 
-      {preview.status === 'error' && (
-        <Alert severity="error">Não foi possível carregar suas cápsulas</Alert>
+      {result.status === 'loading' && <Typography role="status">Carregando cápsulas…</Typography>}
+      {result.status === 'error' && (
+        <Alert severity="error" action={<Button onClick={retry}>Tentar novamente</Button>}>
+          {result.message}
+        </Alert>
       )}
 
-      {preview.status === 'ready' && (
+      {result.status === 'ready' && (
         <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 1.3fr) minmax(0, 1fr)' } }}>
           <Paper component="section" aria-labelledby="next-title" variant="outlined" sx={{ p: 3, borderRadius: '24px' }}>
             <Stack spacing={2}>
@@ -160,7 +153,7 @@ export default function Home() {
         </Box>
       )}
 
-      {preview.status === 'ready' && (
+      {result.status === 'ready' && (
         <Stack component="section" aria-labelledby="recent-title" spacing={2}>
           <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography id="recent-title" component="h2" variant="h6">Suas cápsulas</Typography>

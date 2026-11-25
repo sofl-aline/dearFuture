@@ -3,19 +3,10 @@ import { Alert, Box, Button, MenuItem, Paper, Stack, TextField, Typography } fro
 import { Inbox, Plus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import CapsuleCard from '../components/CapsuleCard/CapsuleCard'
-import { listCapsules } from '../services/capsuleStorage'
-import type { Capsule } from '../types/capsule'
-
-type Result = { capsules: Capsule[]; error: string }
+import useCapsules from '../hooks/useCapsules'
 
 export default function Capsules() {
-  const [result] = useState<Result>(() => {
-    try {
-      return { capsules: listCapsules(), error: '' }
-    } catch {
-      return { capsules: [], error: 'Não foi possível ler as cápsulas salvas.' }
-    }
-  })
+  const { result, retry } = useCapsules()
   const [filter, setFilter] = useState('all')
   const [now, setNow] = useState(() => Date.now())
 
@@ -24,7 +15,9 @@ export default function Capsules() {
     return () => window.clearInterval(timer)
   }, [])
 
-  const visible = result.capsules.filter((capsule) => {
+  const capsules = result.status === 'ready' ? result.capsules : []
+
+  const visible = capsules.filter((capsule) => {
     if (filter === 'future') return Date.parse(capsule.opensAt) > now
     if (filter === 'available') return Date.parse(capsule.opensAt) <= now
     return true
@@ -53,7 +46,13 @@ export default function Capsules() {
         </Button>
       </Stack>
 
-      {result.error ? <Alert severity="error">{result.error}</Alert> : result.capsules.length === 0 ? (
+      {result.status === 'loading' && <Typography role="status">Carregando cápsulas…</Typography>}
+      {result.status === 'error' && (
+        <Alert severity="error" action={<Button onClick={retry}>Tentar novamente</Button>}>
+          {result.message}
+        </Alert>
+      )}
+      {result.status === 'ready' && (capsules.length === 0 ? (
         <Paper variant="outlined" sx={{ p: { xs: 3, md: 5 }, borderRadius: '24px', textAlign: 'center' }}>
           <Stack spacing={2} sx={{ alignItems: 'center' }}>
             <Box sx={{ color: 'primary.main' }}>
@@ -105,7 +104,7 @@ export default function Capsules() {
             </Box>
           )}
         </>
-      )}
+      ))}
     </Stack>
   )
 }

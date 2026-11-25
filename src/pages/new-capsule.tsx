@@ -2,24 +2,27 @@ import { useState } from 'react'
 import { Alert, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import CapsuleForm from '../components/CapsuleForm/CapsuleForm'
-import { createCapsule } from '../services/capsuleStorage'
+import { createCapsule } from '../services/capsuleApi'
 import type { NewCapsule as NewCapsuleData } from '../types/capsule'
 
 export default function NewCapsule() {
   const navigate = useNavigate()
   const [saveError, setSaveError] = useState('')
+  const [saving, setSaving] = useState(false)
 
-  function handleSubmit(values: NewCapsuleData) {
-    setSaveError('') // limpa um erro antigo antes de tentar de novo
+  async function handleSubmit(values: NewCapsuleData) {
+    if (saving) return
+    setSaving(true)
+    setSaveError('')
 
     try {
-      // Grava no navegador e devolve a cápsula com o id
-      const capsule = createCapsule(values)
-      // Leva para a página de detalhe da cápsula criada
+      const capsule = await createCapsule(values)
       navigate(`/capsules/${capsule.id}`)
-    } catch {
-      // Os campos continuam preenchidos: o formulário não é apagado
-      setSaveError('Não foi possível salvar a cápsula. Tente novamente.')
+    } catch (error) {
+      // Mantém os campos preenchidos para permitir uma nova tentativa.
+      setSaveError(error instanceof Error ? error.message : 'Não foi possível salvar a cápsula.')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -27,7 +30,7 @@ export default function NewCapsule() {
     <Stack spacing={2}>
       <Typography component="h1" variant="h4">Nova cápsula</Typography>
       {saveError && <Alert severity="error">{saveError}</Alert>}
-      <CapsuleForm onSubmit={handleSubmit} />
+      <CapsuleForm onSubmit={handleSubmit} saving={saving} />
     </Stack>
   )
 }

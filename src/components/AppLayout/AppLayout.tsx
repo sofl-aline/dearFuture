@@ -1,12 +1,38 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Button, Stack, Typography } from '@mui/material'
+import { LogIn, LogOut } from 'lucide-react'
 import { Link, Outlet } from 'react-router-dom'
+import useSession from '../../hooks/useSession'
+import { setToken } from '../../services/api'
 import AppNavigation from '../AppNavigation/AppNavigation'
 import BrandLogo from '../BrandLogo/BrandLogo'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 
 const SIDEBAR_WIDTH = 248
 
+function SessionButton({ loggedIn }: { loggedIn: boolean }) {
+  return loggedIn ? (
+    <Button
+      onClick={() => setToken(null)}
+      startIcon={<LogOut size={20} strokeWidth={1.75} aria-hidden="true" />}
+      sx={{ color: 'inherit', justifyContent: 'flex-start', px: 1.5 }}
+    >
+      Sair
+    </Button>
+  ) : (
+    <Button
+      component={Link}
+      to="/login"
+      startIcon={<LogIn size={20} strokeWidth={1.75} aria-hidden="true" />}
+      sx={{ color: 'inherit', justifyContent: 'flex-start', px: 1.5 }}
+    >
+      Entrar
+    </Button>
+  )
+}
+
 export default function AppLayout() {
+  const token = useSession()
+
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
       <Box
@@ -63,6 +89,7 @@ export default function AppLayout() {
           <ThemeToggle />
           <Typography variant="body2" sx={{ opacity: 0.8 }}>Tema</Typography>
         </Stack>
+        <SessionButton loggedIn={Boolean(token)} />
       </Box>
 
       <Box sx={{ flexGrow: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
@@ -90,7 +117,10 @@ export default function AppLayout() {
             >
               <BrandLogo size={36} />
             </Box>
-            <ThemeToggle />
+            <Stack direction="row" sx={{ alignItems: 'center' }}>
+              <ThemeToggle />
+              <SessionButton loggedIn={Boolean(token)} />
+            </Stack>
           </Stack>
           <AppNavigation orientation="horizontal" />
         </Box>
