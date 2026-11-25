@@ -1,10 +1,11 @@
 # Dear Future
 
-Aplicação de cápsulas do tempo. O fluxo previsto permite escrever uma carta,
-agendar a abertura e consultar as cápsulas no mesmo navegador. A aplicação já
-oferece navegação, destaque da próxima cápsula na Home, listagem com filtros
-e abertura de cartas na data programada. O formulário de criação e a
-integração dos feriados estão em desenvolvimento.
+Aplicação de cápsulas do tempo que permite escrever uma carta, agendar a
+abertura e consultar as cápsulas no mesmo navegador. O fluxo funcional do MVP
+está integrado à `main`: formulário com validação e gravação, destaque da
+próxima cápsula na Home, listagem com filtros, abertura de cartas na data
+programada e painel de feriados do mês de criação. A validação final no
+navegador e o acabamento visual seguem como próximas etapas.
 
 ## Executar localmente
 
@@ -31,11 +32,12 @@ A demonstração será local.
 - Na implementação do MVP, `src/types/capsule.ts` define `Capsule`.
   `src/services/capsuleStorage.ts` concentra o acesso ao localStorage.
   `src/hooks/useCountdown.ts` controla a contagem regressiva.
-  Os componentes `CapsuleForm` e `CapsuleCard` já estão integrados; o
-  formulário ainda precisa de validação e integração com a gravação.
-  O serviço `src/services/holidaysApi.ts`, que consulta a BrasilAPI com fetch,
-  e o painel `HolidayContext` estão em desenvolvimento na branch responsável
-  pela API e ainda precisam ser integrados à `main`.
+  `CapsuleForm` valida os campos e envia os dados para gravação; após salvar,
+  a página de criação navega para o detalhe e preserva os campos em caso de erro.
+  `CapsuleCard` é compartilhado pela Home e pela listagem.
+  O serviço `src/services/holidaysApi.ts` consulta a BrasilAPI com fetch.
+  O painel `HolidayContext` está integrado ao detalhe e apresenta carregamento,
+  dados, vazio e erro, com nova tentativa e cancelamento ao desmontar.
 
 | Rota | Tela |
 | --- | --- |
@@ -50,7 +52,7 @@ A demonstração será local.
 | Integrante                              | Branch | Sequência de mudanças |
 |-----------------------------------------| --- | --- |
 | Aline Silva Oliveira de Figueiredo Lima | `sofl-aline/base-navegacao` | Configuração → rotas → layout → destaque na Home → README |
-| Mateus Cavalcante de Lima               | `codex/MateusCavalcanteLima-criacao` | Campos controlados → validação → gravação e feedback |
+| Mateus Cavalcante de Lima               | `MateusCavalcanteLima/criacao` | Campos controlados → validação → gravação e feedback |
 | José Vasconcelos de Carvalho Neto       | `netocarvalhopb/persistencia-listagem` | Tipo → leitura e busca → gravação → cartões → filtro |
 | Romulo Frade Cardoso Fernandes          | `RomuloFCF/abertura` | Detalhe por ID → estado inexistente → contagem regressiva → abertura |
 | Rafaella Porto                          | `rafaellaneporto/api-contexto` | Serviço → painel → carregamento e vazio → erro e nova tentativa → integração |
