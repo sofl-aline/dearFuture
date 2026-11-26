@@ -15,8 +15,8 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route path="login" element={<Auth key="login" />} />
           <Route path="register" element={<Auth key="register" register />} />
+          <Route index element={<Home />} />
           <Route element={<ProtectedRoute />}>
-            <Route index element={<Home />} />
             <Route path="capsules/new" element={<NewCapsule />} />
             <Route path="capsules" element={<Capsules />} />
             <Route path="capsules/:id" element={<CapsuleDetail />} />

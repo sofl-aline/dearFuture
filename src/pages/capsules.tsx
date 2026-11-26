@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Alert, Button, MenuItem, Stack, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Inbox, Plus } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import CapsuleCard from '../components/CapsuleCard/CapsuleCard'
 import useCapsules from '../hooks/useCapsules'
 
@@ -13,33 +15,96 @@ export default function Capsules() {
     return () => window.clearInterval(timer)
   }, [])
 
-  const visible = result.status === 'ready' ? result.capsules.filter((capsule) => {
+  const capsules = result.status === 'ready' ? result.capsules : []
+
+  const visible = capsules.filter((capsule) => {
     if (filter === 'future') return Date.parse(capsule.opensAt) > now
     if (filter === 'available') return Date.parse(capsule.opensAt) <= now
     return true
-  }) : []
+  })
 
   return (
-    <Stack spacing={2}>
-      <Typography component="h1" variant="h4">Minhas cápsulas</Typography>
+    <Stack spacing={3}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{ justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'flex-end' } }}
+      >
+        <Box>
+          <Typography component="h1" variant="h4">Minhas cápsulas</Typography>
+          <Typography sx={{ color: 'text.secondary', mt: 0.5 }}>
+            As cartas que você guardou para o futuro.
+          </Typography>
+        </Box>
+        <Button
+          component={Link}
+          to="/capsules/new"
+          variant="contained"
+          startIcon={<Plus size={20} strokeWidth={1.75} aria-hidden="true" />}
+        >
+          Nova cápsula
+        </Button>
+      </Stack>
+
       {result.status === 'loading' && <Typography role="status">Carregando cápsulas…</Typography>}
       {result.status === 'error' && (
         <Alert severity="error" action={<Button onClick={retry}>Tentar novamente</Button>}>
           {result.message}
         </Alert>
       )}
-      {result.status === 'ready' && (
+      {result.status === 'ready' && (capsules.length === 0 ? (
+        <Paper variant="outlined" sx={{ p: { xs: 3, md: 5 }, borderRadius: '24px', textAlign: 'center' }}>
+          <Stack spacing={2} sx={{ alignItems: 'center' }}>
+            <Box sx={{ color: 'primary.main' }}>
+              <Inbox size={40} strokeWidth={1.5} aria-hidden="true" />
+            </Box>
+            <Typography>Você ainda não guardou nenhuma cápsula.</Typography>
+            <Button component={Link} to="/capsules/new" variant="contained">Criar a primeira cápsula</Button>
+          </Stack>
+        </Paper>
+      ) : (
         <>
-          <TextField select label="Exibir" value={filter}
-            onChange={(event) => setFilter(event.target.value)}>
+          <TextField
+            select
+            size="small"
+            label="Exibir"
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+            sx={{ width: '100%', maxWidth: 280 }}
+          >
             <MenuItem value="all">Todas</MenuItem>
             <MenuItem value="future">Seladas</MenuItem>
             <MenuItem value="available">Disponíveis para abertura</MenuItem>
           </TextField>
-          {visible.length === 0 && <Typography>Nenhuma cápsula encontrada.</Typography>}
-          {visible.map((capsule) => <CapsuleCard key={capsule.id} capsule={capsule} />)}
+
+          {visible.length === 0 ? (
+            <Paper variant="outlined" sx={{ p: 3, borderRadius: '24px' }}>
+              <Stack spacing={1.5} sx={{ alignItems: 'flex-start' }}>
+                <Typography>Nenhuma cápsula encontrada neste filtro.</Typography>
+                <Button onClick={() => setFilter('all')}>Mostrar todas</Button>
+              </Stack>
+            </Paper>
+          ) : (
+            <Box
+              component="ul"
+              sx={{
+                listStyle: 'none',
+                m: 0,
+                p: 0,
+                display: 'grid',
+                gap: 2,
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))',
+              }}
+            >
+              {visible.map((capsule) => (
+                <li key={capsule.id}>
+                  <CapsuleCard capsule={capsule} now={now} headingComponent="h2" />
+                </li>
+              ))}
+            </Box>
+          )}
         </>
-      )}
+      ))}
     </Stack>
   )
 }

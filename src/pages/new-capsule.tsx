@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Stack, Typography } from '@mui/material'
+import { Alert, Box, Paper, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import CapsuleForm from '../components/CapsuleForm/CapsuleForm'
 import { createCapsule } from '../services/capsuleApi'
@@ -27,10 +27,17 @@ export default function NewCapsule() {
   }
 
   return (
-    <Stack spacing={2}>
-      <Typography component="h1" variant="h4">Nova cápsula</Typography>
+    <Stack spacing={3} sx={{ maxWidth: 760 }}>
+      <Box>
+        <Typography component="h1" variant="h4">Nova cápsula</Typography>
+        <Typography sx={{ color: 'text.secondary', mt: 0.5 }}>
+          Escreva uma mensagem, registre memórias, sonhos ou planos para o seu eu do futuro.
+        </Typography>
+      </Box>
       {saveError && <Alert severity="error">{saveError}</Alert>}
-      <CapsuleForm onSubmit={handleSubmit} saving={saving} />
+      <Paper variant="outlined" sx={{ p: { xs: 2.5, md: 4 }, borderRadius: '24px' }}>
+        <CapsuleForm onSubmit={handleSubmit} saving={saving} />
+      </Paper>
     </Stack>
   )
 }
