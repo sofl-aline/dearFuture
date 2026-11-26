@@ -1,20 +1,24 @@
 import { Box, Button, Stack, Typography } from '@mui/material'
 import { LogIn, LogOut } from 'lucide-react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import useSession from '../../hooks/useSession'
 import { setToken } from '../../services/api'
 import AppNavigation from '../AppNavigation/AppNavigation'
+import AuthLayout from '../AuthLayout/AuthLayout'
 import BrandLogo from '../BrandLogo/BrandLogo'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 
 const SIDEBAR_WIDTH = 248
 
-function SessionButton({ loggedIn }: { loggedIn: boolean }) {
+const sideButton = { color: 'inherit', justifyContent: 'flex-start', borderRadius: '12px', px: 2, fontWeight: 600 }
+
+function SessionButton({ loggedIn, fullWidth = false }: { loggedIn: boolean; fullWidth?: boolean }) {
   return loggedIn ? (
     <Button
       onClick={() => setToken(null)}
+      fullWidth={fullWidth}
       startIcon={<LogOut size={20} strokeWidth={1.75} aria-hidden="true" />}
-      sx={{ color: 'inherit', justifyContent: 'flex-start', px: 1.5 }}
+      sx={sideButton}
     >
       Sair
     </Button>
@@ -22,8 +26,9 @@ function SessionButton({ loggedIn }: { loggedIn: boolean }) {
     <Button
       component={Link}
       to="/login"
+      fullWidth={fullWidth}
       startIcon={<LogIn size={20} strokeWidth={1.75} aria-hidden="true" />}
-      sx={{ color: 'inherit', justifyContent: 'flex-start', px: 1.5 }}
+      sx={sideButton}
     >
       Entrar
     </Button>
@@ -32,6 +37,17 @@ function SessionButton({ loggedIn }: { loggedIn: boolean }) {
 
 export default function AppLayout() {
   const token = useSession()
+  const { pathname } = useLocation()
+
+  // entrar e criar conta: só o formulário, sem o menu
+  if (pathname === '/login' || pathname === '/register') {
+    return <AuthLayout />
+  }
+
+  // página inicial de quem não entrou: a apresentação ocupa a tela toda
+  if (pathname === '/' && !token) {
+    return <Outlet />
+  }
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
@@ -85,11 +101,10 @@ export default function AppLayout() {
         <Typography sx={{ fontStyle: 'italic', opacity: 0.8, borderLeft: '2px solid #B9A7F5', pl: 1.5 }}>
           Guarde o hoje para o seu futuro.
         </Typography>
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-          <ThemeToggle />
-          <Typography variant="body2" sx={{ opacity: 0.8 }}>Tema</Typography>
+        <Stack spacing={0.5} sx={{ borderTop: '1px solid rgba(185, 167, 245, 0.25)', pt: 2 }}>
+          <ThemeToggle showLabel />
+          <SessionButton loggedIn={Boolean(token)} fullWidth />
         </Stack>
-        <SessionButton loggedIn={Boolean(token)} />
       </Box>
 
       <Box sx={{ flexGrow: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>

@@ -9,9 +9,16 @@ import sparkle from '../assets/decorations/sparkle.svg'
 import CapsuleCard from '../components/CapsuleCard/CapsuleCard'
 import NextOpeningCard from '../components/NextOpeningCard/NextOpeningCard'
 import useCapsules from '../hooks/useCapsules'
+import useSession from '../hooks/useSession'
+import Landing from './landing'
 import type { Capsule } from '../types/capsule'
 
 export default function Home() {
+  const token = useSession()
+  return token ? <Dashboard /> : <Landing />
+}
+
+function Dashboard() {
   const theme = useTheme()
   const light = theme.palette.mode === 'light'
   const { result, retry } = useCapsules()
